@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "psyplan-api",
   "version": "1.0.0",
   "main": "index.js",
@@ -10,5 +10,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "@prisma/client": "^5.22.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
   }
 }
