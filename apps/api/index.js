@@ -8,8 +8,9 @@ let prisma = null;
 try {
   const { PrismaClient } = require('@prisma/client');
   prisma = new PrismaClient();
+  console.log('Prisma conectado correctamente');
 } catch (e) {
-  console.log('Prisma no disponible, endpoints /plans funcionarán en modo simulado');
+  console.log('Prisma no disponible, endpoints /plans funcionaran en modo simulado');
 }
 
 app.use(cors());
@@ -21,7 +22,11 @@ app.get('/health', (req, res) => {
 
 app.get('/plans', async (req, res) => {
   if (!prisma) {
-    return res.json({ message: 'API funcionando. Prisma no configurado.', data: [] });
+    return res.json({ 
+      message: 'API funcionando correctamente. Prisma no configurado.', 
+      data: [],
+      status: 'demo_mode'
+    });
   }
   try {
     const plans = await prisma.plan.findMany();
@@ -37,7 +42,8 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     company: 'HexCore Systems',
     endpoints: ['/health', '/plans'],
-    status: prisma ? 'Prisma conectado' : 'Prisma no disponible'
+    database: prisma ? 'connected' : 'disconnected',
+    status: 'running'
   });
 });
 
