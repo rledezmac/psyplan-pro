@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const cors = require('cors');
 const { PrismaClient } = require('@prisma/client');
 
@@ -53,5 +53,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(\PsyPlan Pro API running on port \\);
+  console.log('PsyPlan Pro API running on port ' + PORT);
 });
