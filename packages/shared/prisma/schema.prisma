@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(TEACHER)
+  students  Student[]
+  plans     Plan[]
+  templates Template[]
+  images    Image[]
+  createdAt DateTime @default(now())
+}
+
+model Student {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName       String
+  age            Int
+  grade          String
+  specialNeeds   Boolean  @default(false)
+  diagnosis      String?
+  iepGoals       String?
+  visualSupports String[]
+  plans          Plan[]
+  createdAt      DateTime @default(now())
+}
+
+model Template {
+  id        String   @id @default(uuid())
+  name      String
+  category  String
+  structure Json
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  createdBy String?
+  isPublic  Boolean  @default(false)
+  plans     Plan[]
+  images    Image[]
+}
+model Plan {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  studentId      String?
+  student        Student? @relation(fields: [studentId], references: [id])
+  templateId     String?
+  template       Template? @relation(fields: [templateId], references: [id])
+  type           PlanType
+  grade          String
+  specialNeeds   Boolean  @default(false)
+  accommodations String?
+  content        Json
+  pdfUrl         String?
+  generatedAt    DateTime @default(now())
+}
+
+model Image {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  templateId String?
+  template   Template? @relation(fields: [templateId], references: [id])
+  url        String
+  thumbnail  String?
+  altText    String
+  category   String
+  tags       String[]
+  createdAt  DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  PSYCHOPEDAGOGUE
+  TEACHER
+}
+
+enum PlanType {
+  DAILY
+  WEEKLY
+}
