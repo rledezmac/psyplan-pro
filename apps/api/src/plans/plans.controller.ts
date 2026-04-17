@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Req, HttpCode } from '@nestjs/common'
+﻿import { Controller, Post, Body, UseGuards, Req, HttpCode } from '@nestjs/common'
 import { PlansService } from './plans.service'
 import { CreatePlanDto } from './dto/create-plan.dto'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
@@ -8,6 +8,10 @@ import { Roles } from '../auth/roles.decorator'
 @Controller('plans')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class PlansController {
+  @Get('health')
+  healthCheck() {
+    return { status: 'ok', timestamp: new Date().toISOString() };
+  }
   constructor(private readonly plansService: PlansService) {}
 
   @Post()

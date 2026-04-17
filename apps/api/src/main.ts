@@ -10,6 +10,6 @@ async function bootstrap() {
   app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }))
   app.enableCors({ origin: process.env.FRONTEND_URL, credentials: true })
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }))
-  await app.listen(3000)
+  await app.listen(process.env.PORT || 3001)
 }
 bootstrap()
