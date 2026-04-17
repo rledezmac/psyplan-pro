@@ -9,12 +9,10 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Obtener todos los planes
 app.get('/plans', async (req, res) => {
   try {
     const plans = await prisma.plan.findMany();
@@ -24,7 +22,6 @@ app.get('/plans', async (req, res) => {
   }
 });
 
-// Obtener un plan por ID
 app.get('/plans/:id', async (req, res) => {
   try {
     const plan = await prisma.plan.findUnique({
@@ -37,27 +34,24 @@ app.get('/plans/:id', async (req, res) => {
   }
 });
 
-// Crear un plan
 app.post('/plans', async (req, res) => {
   try {
-    const plan = await prisma.plan.create({
-      data: req.body
-    });
+    const plan = await prisma.plan.create({ data: req.body });
     res.status(201).json(plan);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// Ruta raíz
 app.get('/', (req, res) => {
   res.json({ 
     name: 'PsyPlan Pro API',
     version: '1.0.0',
+    company: 'HexCore Systems',
     endpoints: ['/health', '/plans']
   });
 });
 
 app.listen(PORT, () => {
-  console.log(\Server running on port \\);
+  console.log(PsyPlan Pro API running on port );
 });
