@@ -1,0 +1,11 @@
+﻿{
+  "name": "psyplan-pro",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd apps/api && npm install && npm run build",
+    "start": "cd apps/api && node dist/main.js"
+  },
+  "engines": {
+    "node": "20.x"
+  }
+}
