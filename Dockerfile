@@ -1,20 +1,22 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Copiar configuración del monorepo
-COPY package*.json ./
-COPY pnpm-workspace.yaml ./
-COPY turbo.json ./
+# Copiar solo lo necesario para la API
+COPY apps/api/package*.json ./apps/api/
+COPY packages/shared/package*.json ./packages/shared/
 
-# Copiar la app API y el shared
+# Instalar dependencias
+WORKDIR /app/apps/api
+RUN npm install
+
+# Copiar el resto del código
+WORKDIR /app
 COPY apps/api ./apps/api
 COPY packages/shared ./packages/shared
 
-# Instalar dependencias y construir
-RUN npm install -g pnpm
-RUN pnpm install
+# Construir la API
 WORKDIR /app/apps/api
-RUN pnpm run build
+RUN npm run build
 
 FROM node:20-alpine
 WORKDIR /app
