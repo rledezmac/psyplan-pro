@@ -1,0 +1,9 @@
+[Cliente Web/PWA] ──HTTPS/REST──► [API Gateway (NestJS)]
+      │                                   │
+  • Next.js 14 (App Router)           • NestJS + TypeScript
+  • Tailwind + shadcn/ui              • Prisma ORM + PostgreSQL
+  • Zustand (Estado)                  • JWT + RBAC Guards
+  • @react-pdf/renderer               • Redis (Cache/Rate Limit)
+  • Service Worker + IndexedDB        • BullMQ (Colas PDF/Notifs)
+      │                                   │
+      └──────► [PostgreSQL] ◄─────────────┘

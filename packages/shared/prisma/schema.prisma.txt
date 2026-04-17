@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(TEACHER)
+  students  Student[]
+  plans     Plan[]
+  templates Template[]
+  images    Image[]
+  createdAt DateTime @default(now())
+}
+
+model Student {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName     String
+  age          Int
+  grade        String
+  specialNeeds Boolean  @default(false)
+  diagnosis    String?
+  iepGoals     String?
+  visualSupports String[] // Array de IDs de imágenes para apoyos visuales
+  plans        Plan[]
+  createdAt    DateTime @default(now())
+}
+
+model Template {
+  id          String   @id @default(uuid())
+  name        String
+  category    String   // "diaria", "semanal", "adaptada", "kinder", "primaria"
+  structure   Json     // Definición de secciones, imágenes por defecto, estilos
+  createdBy   String?
+  isPublic    Boolean  @default(false)
+  plans       Plan[]
+  images      Image[]
+}
+
+model Plan {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  studentId     String?
+  student       Student? @relation(fields: [studentId], references: [id])
+  templateId    String?
+  template      Template?@relation(fields: [templateId], references: [id])
+  type          PlanType
+  grade         String
+  specialNeeds  Boolean  @default(false)
+  accommodations String?
+  content       Json     // Actividades, tiempos, recursos, imágenes usadas
+  pdfUrl        String?
+  generatedAt   DateTime @default(now())
+}
+
+model Image {
+  id          String   @id @default(uuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  templateId  String?
+  template    Template?@relation(fields: [templateId], references: [id])
+  url         String
+  thumbnail   String?
+  altText     String
+  category    String   // "visual_support", "activity", "decoration", "worksheet"
+  tags        String[]
+  createdAt   DateTime @default(now())
+}
+
+enum Role { ADMIN, PSYCHOPEDAGOGUE, TEACHER }
+enum PlanType { DAILY, WEEKLY }

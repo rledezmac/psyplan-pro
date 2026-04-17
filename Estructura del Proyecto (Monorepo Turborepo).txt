@@ -1,0 +1,12 @@
+📦 psicoped-planner/
+├── apps/
+│   ├── web/                 # Next.js 14 + PWA + UI
+│   └── api/                 # NestJS Backend
+├── packages/
+│   ├── shared/              # Tipos TS, esquemas Zod, plantillas PDF
+│   └── ui/                  # Componentes base reutilizables
+├── infra/
+│   ├── docker-compose.yml   # Dev environment
+│   └── ci/                  # GitHub Actions workflows
+├── package.json
+└── turbo.json
